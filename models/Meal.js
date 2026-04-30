@@ -20,6 +20,8 @@ const mealSchema = new mongoose.Schema({
   }],
   ingredients: [{ type: String }],
   allergens: [{ type: String }],
+  availableFrom: { type: Date, required: true },
+  availableTo: { type: Date, required: true },
   location: { type: String },
   rating: { type: Number, default: 0 },
   reviewCount: { type: Number, default: 0 },

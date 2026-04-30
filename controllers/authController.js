@@ -11,13 +11,14 @@ exports.registerUser = async (req, res) => {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+    const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random`;
 
-    user = await User.create({ name, email, password: hashedPassword, role, phone, address, bio });
+    user = await User.create({ name, email, password: hashedPassword, role, phone, address, bio, avatar: defaultAvatar });
     
     // Generate JWT
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET || 'secret123', { expiresIn: '7d' });
 
-    res.status(201).json({ token, user: { id: user._id, name, email, role, avatar: user.avatar } });
+    res.status(201).json({ token, user: { id: user._id, name, email, role, avatar: user.avatar, phone: user.phone, address: user.address, bio: user.bio } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -35,7 +36,7 @@ exports.loginUser = async (req, res) => {
 
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET || 'secret123', { expiresIn: '7d' });
 
-    res.status(200).json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar } });
+    res.status(200).json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role, avatar: user.avatar, phone: user.phone, address: user.address, bio: user.bio } });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
