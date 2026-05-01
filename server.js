@@ -24,9 +24,19 @@ app.get('/', (req, res) => {
 });
 
 // Database Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch(err => console.log('❌ Connection Error:', err));
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log('✅ MongoDB Connected Successfully');
+  } catch (err) {
+    console.error('❌ MongoDB Connection Failed:');
+    console.error(err.message);
+    // Exit process with failure
+    process.exit(1);
+  }
+};
+
+connectDB();
 
 const PORT =8080;
 app.listen(PORT,() => console.log(`🚀 Server running on port ${PORT}`));
