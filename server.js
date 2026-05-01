@@ -9,13 +9,17 @@ const app = express();
 //   methods: ["GET", "POST", "PUT", "DELETE"],
 //   allowedHeaders: ["Content-Type", "Authorization"]
 // }));
-app.use(cors({
-  origin: "*",
-  credentials: true
-}));
+const corsOptions = {
+  origin: "*", 
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+};
 
-// 2. Handle the OPTIONS preflight request manually just in case
-app.options('*', cors());
+// 2. Apply CORS to all routes using the new regex syntax
+app.use(cors(corsOptions));
+app.options('(.*)', cors(corsOptions));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
