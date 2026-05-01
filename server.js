@@ -4,11 +4,18 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
+// app.use(cors({
+//   origin: "*",
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization"]
+// }));
 app.use(cors({
   origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  credentials: true
 }));
+
+// 2. Handle the OPTIONS preflight request manually just in case
+app.options('*', cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
